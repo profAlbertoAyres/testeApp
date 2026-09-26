@@ -10,22 +10,38 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Carrega as variáveis do arquivo .env (que fica na raiz do projeto, ao lado do manage.py)
+load_dotenv(BASE_DIR / '.env')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
+
+def env_bool(name, default=False):
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value.strip().lower() in ('1', 'true', 'yes', 'on')
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v&!o5vhbm0#8mmnl#wdggi)n5_+ov)-c%e!wmpr5&54swh76$1'
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    raise Exception(
+        "SECRET_KEY não encontrada. Crie um arquivo .env na raiz do projeto "
+        "(veja .env.example) com a variável SECRET_KEY definida."
+    )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env_bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h.strip()
+]
 
 
 # Application definition
@@ -38,7 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #meus Apps
+    # meus Apps
     'usuarios',
     'agendas',
     'treinos',
@@ -60,8 +76,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,7 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
@@ -129,6 +143,22 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_URL = 'login'
-#LOGIN_REDIRECT_URL = 'usuarios:aluno_dashboard'
+# LOGIN_REDIRECT_URL = 'usuarios:aluno_dashboard'
+
+
+# E-mail
+# https://docs.djangoproject.com/en/6.0/topics/email/
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_USE_TLS = env_bool('EMAIL_USE_TLS', default=True)
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+
+# Se DEBUG estiver desligado, o Django exige HTTPS/segurança extra em produção.
+# Como o plano free do PythonAnywhere já serve em HTTPS, isso é seguro deixar ligado.
+if not DEBUG:
+    SECURE_SSL_REDIRECT = False  # o PythonAnywhere já cuida do HTTPS na borda
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True

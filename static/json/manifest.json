@@ -13,5 +13,21 @@
     { "src": "/static/images/web-app-manifest-192x192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/static/images/web-app-manifest-512x512.png", "sizes": "512x512", "type": "image/png" },
     { "src": "/static/images/web-app-manifest-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    {
+      "src": "/static/images/screenshots/mobile-tela-inicial.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tela inicial no celular"
+    },
+    {
+      "src": "/static/images/screenshots/tablet-tela-inicial.png",
+      "sizes": "1536x2048",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tela inicial no tablet"
+    }
   ]
 }

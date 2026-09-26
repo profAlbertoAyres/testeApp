@@ -18,7 +18,7 @@
   "screenshots": [
     {
       "src": "/static/images/screenshots/mobile-tela-inicial.png",
-      "sizes": "750x1334",
+      "sizes": "328x717",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Tela inicial no celular"

@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.pythonanywhere.bettoayres.twa",
+        "sha256_cert_fingerprints": ["9F:6D:7E:58:D4:98:07:76:6A:97:8D:88:6C:23:13:2F:73:2B:3F:EB:25:8E:9F:4E:E4:D2:49:E1:EB:E3:38:A8"]
+      }
+    }]

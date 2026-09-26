@@ -62,9 +62,13 @@ urlpatterns = [
     path('senha/resetar/completo/', PasswordResetCompleteView.as_view(
         template_name='usuarios/acesso/senha_redefinida.html'
     ), name='senha_redefinida'),
-    path('sw.js', serve, {
+    path('assetlinks.json', serve, {
             'path': 'sw.js',
             'document_root': os.path.join(settings.BASE_DIR, 'static'),
-        }),
+    }),
+    path('.well-known/assetlinks.json', serve, {
+        'path': '.well-known/assetlinks.json',
+        'document_root': os.path.join(settings.BASE_DIR, 'static'),
+    }),
 
 ]
